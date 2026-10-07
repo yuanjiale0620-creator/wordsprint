@@ -20,7 +20,7 @@ class H(SimpleHTTPRequestHandler):
   if path=='/api/units':
    con.execute('insert or replace into units(id,title,subtitle,words) values(?,?,?,?)',(data['id'],data['title'],data.get('subtitle',''),json.dumps(data.get('words',[]),ensure_ascii=False))); con.commit(); con.close(); return self.send_json(data)
   if path=='/api/login':
-   if data.get('username')=='teacher' and data.get('password')=='change-me': token=secrets.token_urlsafe(24); sessions[token]=True; return self.send_json({'ok':True,'token':token})
+   if data.get('username')=='Julia Yuan' and data.get('password')=='yuanleleyuan0620': token=secrets.token_urlsafe(24); sessions[token]=True; return self.send_json({'ok':True,'token':token})
    return self.send_json({'error':'用户名或密码错误'},401)
   self.send_error(404)
  def do_GET(self):

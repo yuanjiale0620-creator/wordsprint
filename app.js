@@ -86,3 +86,26 @@ function makeQuizPrompt(w){const candidates=[w.sourceExample,w.example].filter(B
 function buildQuiz(){const source=[...currentUnit.words];if(source.length<20){$('quizHint').textContent='This unit needs at least 20 words for the checkpoint.';return}let selected,questions,bank,signature;do{selected=shuffleCopy(source).slice(0,20);questions=shuffleCopy(selected);bank=shuffleCopy(selected);signature=questions.map(w=>w.word).join('|')+'::'+bank.map(w=>w.word).join('|')}while(signature===lastQuizSignature);lastQuizSignature=signature;quizItems=questions.map(w=>({answer:w.word,prompt:makeQuizPrompt(w)}));$('wordBank').innerHTML=bank.map(w=>`<span class="bank-word">${w.word}</span>`).join('');$('quizQuestions').innerHTML=quizItems.map((q,i)=>`<div class="question"><b>QUESTION ${String(i+1).padStart(2,'0')}</b><p>${q.prompt}</p><input class="answer-input" name="q${i}" autocomplete="off" spellcheck="false" placeholder="Type the missing word"></div>`).join('');$('quizProgressText').textContent='0 / 20 answered';$('quizProgressBar').style.width='0%';clearInterval(timerId);timerId=setInterval(()=>{$('quizTimer').textContent=formatTime(Math.floor((Date.now()-learnStarted)/1000))},1000)}
 async function submitQuiz(){const a=quizItems.map((_,i)=>document.querySelector(`input[name=q${i}]`));if(a.some(x=>!x||!x.value.trim())){$('quizHint').textContent='Please answer every question first.';return}if(new Set(a.map(x=>normAnswer(x.value))).size!==20){$('quizHint').textContent='Use each word from the bank once.';return}clearInterval(timerId);const correct=a.reduce((n,x,i)=>n+(normAnswer(x.value)===normAnswer(quizItems[i].answer)?1:0),0),score=Math.round(correct/20*100),seconds=Math.floor((Date.now()-learnStarted)/1000),record={name:currentName,unit:currentUnit.title,score,total:100,seconds,attempt:++attemptNo,passed:score>=70};const saved=await api('/api/attempts',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(record)});if(!saved){const all=JSON.parse(localStorage.getItem('wordSprintAttempts')||'[]');all.unshift({...record,at:new Date().toLocaleString()});localStorage.setItem('wordSprintAttempts',JSON.stringify(all))}$('resultIcon').textContent=score>=70?'✓':'!';$('resultKicker').textContent=score>=70?'UNIT PASSED':'KEEP PRACTISING';$('resultTitle').textContent=score>=70?'You passed this round.':'Keep practising and try again.';$('resultScore').textContent=score;$('resultMessage').textContent=score>=70?`${currentName}, you have mastered this round's focus words.`:`You got ${correct} / 20. You need 70 points to pass.`;$('answerReview').innerHTML='<div class="review-title">ANSWER REVIEW</div>'+quizItems.map((q,i)=>{const student=a[i].value.trim(),ok=normAnswer(student)===normAnswer(q.answer);return `<div class="review-row ${ok?'correct':'wrong'}"><span>${String(i+1).padStart(2,'0')}</span><span>Your answer: <span class="review-answer">${escapeHtml(student)}</span></span><span class="review-correct">${ok?'Correct':'Correct: '+q.answer}</span></div>`}).join('');document.querySelector('.result-panel').classList.toggle('fail',score<70);show('resultView')}
 $('retryBtn').onclick=()=>{wordIndex=0;learnStarted=Date.now();renderCard();show('learnView')};
+
+// Teacher console sign-in. GitHub Pages can only provide a client-side gate;
+// server.py should enforce the same credentials when deployed with the API.
+const TEACHER_USERNAME='Julia Yuan';
+const TEACHER_PASSWORD='yuanleleyuan0620';
+$('teacherBtn').onclick=()=>{
+  $('teacherUsername').value='';
+  $('teacherPassword').value='';
+  $('teacherLoginError').textContent='';
+  show('teacherLoginView');
+};
+$('teacherLoginForm').onsubmit=async e=>{
+  e.preventDefault();
+  const username=$('teacherUsername').value.trim();
+  const password=$('teacherPassword').value;
+  if(username!==TEACHER_USERNAME || password!==TEACHER_PASSWORD){
+    $('teacherLoginError').textContent='Incorrect username or password.';
+    return;
+  }
+  show('teacherView');
+  populateEditor();
+  loadTeacher();
+};
