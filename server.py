@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-import json, secrets, sqlite3
+import json, os, secrets, sqlite3
 from http.server import ThreadingHTTPServer, SimpleHTTPRequestHandler
 from urllib.parse import urlparse
 
@@ -10,7 +10,9 @@ def db():
 class H(SimpleHTTPRequestHandler):
  def __init__(self,*a,**kw): super().__init__(*a,directory='.',**kw)
  def send_json(self,obj,status=200):
-  b=json.dumps(obj,ensure_ascii=False).encode(); self.send_response(status); self.send_header('Content-Type','application/json; charset=utf-8'); self.send_header('Content-Length',str(len(b))); self.end_headers(); self.wfile.write(b)
+  b=json.dumps(obj,ensure_ascii=False).encode(); self.send_response(status); self.send_header('Content-Type','application/json; charset=utf-8'); self.send_header('Access-Control-Allow-Origin','*'); self.send_header('Access-Control-Allow-Headers','Content-Type, Authorization'); self.send_header('Access-Control-Allow-Methods','GET, POST, OPTIONS'); self.send_header('Content-Length',str(len(b))); self.end_headers(); self.wfile.write(b)
+ def do_OPTIONS(self):
+  self.send_response(204); self.send_header('Access-Control-Allow-Origin','*'); self.send_header('Access-Control-Allow-Headers','Content-Type, Authorization'); self.send_header('Access-Control-Allow-Methods','GET, POST, OPTIONS'); self.end_headers()
  def body(self):
   n=int(self.headers.get('Content-Length',0)); return json.loads(self.rfile.read(n) or '{}')
  def do_POST(self):
@@ -30,4 +32,5 @@ class H(SimpleHTTPRequestHandler):
   if path=='/api/units':
    rows=[{'id':r[0],'title':r[1],'subtitle':r[2],'words':json.loads(r[3])} for r in con.execute('select id,title,subtitle,words from units')]; con.close(); return self.send_json(rows)
   con.close(); return super().do_GET()
-if __name__=='__main__': db().close(); print('WordSprint: http://localhost:8000'); ThreadingHTTPServer(('0.0.0.0',8000),H).serve_forever()
+if __name__=='__main__':
+ db().close(); port=int(os.environ.get('PORT','8000')); print(f'WordSprint: http://0.0.0.0:{port}'); ThreadingHTTPServer(('0.0.0.0',port),H).serve_forever()
