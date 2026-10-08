@@ -39,7 +39,7 @@ const unit1Words=[
 ['incredible','ADJECTIVE','extremely good or impressive','an incredible atmosphere','The atmosphere is incredible, and it is something everybody should experience.','She gave an incredible performance.']
 ];
 const unit2Words=[
-['digital','ADJECTIVE','using computer technology or electronic systems','digital devices','They are essential to my lifestyle, from the moment I wake up until I go to bed, and I have no problem in admitting this.','Digital tools make it easier to share ideas with classmates.'],
+['digital','ADJECTIVE','using computer technology or electronic systems','digital devices','Some people may say that I’m online too much and that my digital devices control my life, but my response is that they make my life better and easier.','Digital tools make it easier to share ideas with classmates.'],
 ['entertainment','NOUN','activities that amuse or interest people','digital entertainment','All my life I’ve never had a television in my home, and certainly no other form of digital entertainment.','Music is my favourite form of entertainment after school.'],
 ['retired','ADJECTIVE','no longer working because of age','be retired','I’m retired now, but when I was a kid my parents couldn’t afford to buy a television, or even a radio.','My retired neighbour volunteers at the library.'],
 ['afford','VERB','have enough money to pay for something','afford to buy','My parents couldn’t afford to buy a television, or even a radio.','We cannot afford to waste time before the exam.'],
