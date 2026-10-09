@@ -6,3 +6,4 @@
 @media(max-width:800px){.word-bank-panel{max-height:220px;overflow-y:auto}}
 .answer-review{margin:25px auto 0;text-align:left;border-top:1px solid var(--line);padding-top:17px;max-height:360px;overflow:auto}.review-title{font-weight:900;font-size:12px;letter-spacing:.1em;color:var(--green-dark);margin-bottom:9px}.review-row{display:grid;grid-template-columns:28px 1fr auto;gap:9px;align-items:start;padding:9px 0;border-bottom:1px solid #edf3f7;font-size:13px}.review-row.correct{color:var(--green-dark)}.review-row.wrong{color:var(--red)}.review-answer{font-weight:800}.review-correct{color:var(--green-dark);font-weight:800;text-align:right}
 .side-note{color:var(--muted);font-size:13px;line-height:1.7}
+.bank-word{cursor:pointer;user-select:none;transition:opacity .15s}.bank-word.used{text-decoration:line-through;opacity:.45}
