@@ -10,4 +10,7 @@
 /* Source texts for units that include a reading and listening script. */
 .unit-texts{margin:0 auto 28px;max-width:1180px;display:grid;grid-template-columns:1fr 1fr;gap:14px}.unit-texts details{background:#f6f8f7;border:1px solid #dfe6e2;border-radius:14px;padding:16px 18px}.unit-texts summary{cursor:pointer;font-weight:700;letter-spacing:.02em}.source-text{white-space:pre-line;color:#36433e;line-height:1.65;font-size:.94rem;margin-top:14px;max-height:380px;overflow:auto;padding-right:8px}@media(max-width:780px){.unit-texts{grid-template-columns:1fr}.source-text{max-height:300px}}
 .unit-texts{display:none!important}
-#cardDefinition,#cardCollocation{white-space:pre-line;line-height:1.55}
+#cardDefinition,#cardCollocation{white-space:pre-line;line-height:1.45;overflow-wrap:anywhere;word-break:break-word;max-width:100%;margin-bottom:0}
+#cardDefinition{font-size:clamp(15px,2.2vw,18px);max-height:92px;overflow:auto}
+#cardCollocation{font-size:clamp(23px,3.4vw,35px);max-height:116px;overflow:auto}
+.chinese-line{display:block;font-size:.72em;color:#6d8493;margin-top:4px;line-height:1.35}
